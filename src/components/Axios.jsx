@@ -1,66 +1,46 @@
 import { useState } from "react";
 import './Axios.css'
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Axios=()=>{
-    // const [input,setInput]=useState('');
-    const [output,SetOutput]=useState([]);
-
-    // const listItems=output.map((item,index)=>{
-    //     return(
-    //         <li key={index}>{item}</li>
-    //     )
-    // })
+    const [entry,setEntry]=useState([]);
 
 
-    // const changeHandler=(event)=>{
-    //     const value=event.target.value;
-    //     setInput(value);
-    // }
-
-    const clickHandler=()=>{
-
-        axios.get("https://newsapi.org/v2/top-headlines?country=in&apiKey=907bda2a9a99413d93dd18129c91b2c1")
-        .then((response)=>{
-            console.log(response);
-            SetOutput(response.data.articles)
-        })
-
-
-
-
-
-
-        // const items=[...output];
-        // items.push(input);
-        // SetOutput(items);
-        // setInput('');
+    const changeHandler=(event)=>{
+        setEntry({...entry,[event.target.name]:event.target.value})
 
     }
-    return(
-        <>
-        <h1 className="heading">Digikull Students</h1>
-        {/* <input 
-        type="text" 
-        value={input}
-        onChange={changeHandler}/> */}
-        <button onClick={clickHandler}>Add items</button>
-        {/* <table border="1px">
-            <tr>
-            <th>{listItems}</th>
-            </tr>
-        </table> */}
-        {
-            output.map((value)=>{
-                return(
-                    <>
-                    <div>{value.title}</div>
-                    </>
-                )
-            })
-        }
-        </>
-    )
+
+    const addItem=()=>{
+        axios.post('https://jsonplaceholder.typicode.com/todos',entry).then((response)=>{
+            console.log(response.data.title);
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    const getItem=()=>{
+        axios.get('https://jsonplaceholder.typicode.com/todos').then((response)=>{
+            console.log(response.data);
+        }).catch((err)=>{
+            console.log(err);
+        })
+
+    }
+   return(
+       <>
+       <div className='heading'>
+       <h1>Digikull Students</h1>
+       </div>
+
+       <h2>Hello User</h2>
+
+       <input type="text" name="title" onChange={changeHandler}/>
+       <button onClick={addItem}>Add</button>
+       <button onClick={getItem}>Get data</button>
+       </>
+   )
 }
 
 export default Axios;
